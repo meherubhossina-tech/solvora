@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="SOLVORA — a world of practical solutions to everyday problems.">
+<title>SOLVORA — A World of Solutions</title>
+<style>
+:root{--ink:#17233b;--muted:#65718a;--brand:#4268e8;--bg:#f5f7fc;--line:#e5eaf4}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:16px max(20px,calc((100% - 1080px)/2));display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:25px;font-weight:850;letter-spacing:1.5px;color:var(--brand)}nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:14px}
+main{max-width:1080px;margin:auto;padding:42px 20px}.hero{background:linear-gradient(130deg,#172b58,#4268e8);color:#fff;border-radius:24px;padding:42px 34px}
+.hero h1{font-size:clamp(32px,6vw,52px);line-height:1.08;margin:0 0 14px}.hero p{max-width:590px;color:#e5eaff;line-height:1.65}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.btn{border:0;border-radius:12px;padding:12px 17px;font-weight:700;cursor:pointer;background:#fff;color:#2446b3}.btn.primary{background:#fff}.btn.outline{background:transparent;border:1px solid #b9c8ff;color:#fff}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:34px 0 16px}.section-head h2{margin:0;font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}.tile,.panel,.question{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}.tile b{display:block;margin-bottom:5px}.tile span,.muted{color:var(--muted);font-size:13px}
+.panel{margin-top:22px}.search{display:flex;gap:8px;flex-wrap:wrap}.search input{flex:1;min-width:180px}
+input,textarea,select{width:100%;border:1px solid #d9e0ee;border-radius:10px;padding:12px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:90px;resize:vertical}
+.search input{width:auto}.blue{background:var(--brand);color:white}.question{margin:12px 0}.question h3{margin:0 0 8px}.question p{line-height:1.5}.question button{margin:5px 7px 0 0}
+form{display:grid;gap:10px}.hidden{display:none}.tag{display:inline-block;background:#eef2ff;color:#3858c5;padding:4px 9px;border-radius:99px;font-size:12px}
+footer{text-align:center;color:var(--muted);padding:28px 16px;font-size:13px}
+@media(max-width:560px){header{align-items:flex-start;flex-direction:column}nav a{margin:0 12px 0 0}.hero{padding:30px 22px}main{padding-top:24px}}
+</style>
+</head>
+<body>
+<header><div class="logo">SOLVORA</div><nav><a href="#explore">Explore</a><a href="#ask">Ask</a><a href="#about">About</a></nav></header>
+<main>
+<section class="hero"><span class="tag">A WORLD OF SOLUTIONS</span><h1>Every problem deserves<br>a practical solution.</h1><p>Ask everyday questions, share what worked for you, and learn from people around the world. Small ideas can make a big difference.</p><div class="actions"><button class="btn primary" onclick="document.querySelector('#ask').scrollIntoView({behavior:'smooth'})">Ask a problem</button><button class="btn outline" onclick="document.querySelector('#explore').scrollIntoView({behavior:'smooth'})">Explore solutions</button></div></section>
+<div class="section-head"><h2>Explore categories</h2></div>
+<section class="grid">
+<div class="tile">📚 <b>Education</b><span>Learning and study tips</span></div><div class="tile">📱 <b>Technology</b><span>Phones, apps and devices</span></div><div class="tile">🏡 <b>Daily Life</b><span>Useful everyday ideas</span></div><div class="tile">💼 <b>Career</b><span>Skills and work guidance</span></div><div class="tile">💰 <b>Saving Money</b><span>Budget-friendly solutions</span></div><div class="tile">🌍 <b>Travel</b><span>Planning and practical tips</span></div>
+</section>
+<section id="ask" class="panel"><div class="section-head"><h2>Ask the community</h2></div><form id="askForm"><input id="title" required maxlength="100" placeholder="What problem do you need help with?"><select id="category"><option>Daily Life</option><option>Education</option><option>Technology</option><option>Career</option><option>Saving Money</option><option>Travel</option><option>Other</option></select><textarea id="details" required maxlength="1000" placeholder="Add a little more detail (do not include private information)."></textarea><button class="btn blue" type="submit">Post question on this device</button><span class="muted">Demo only: posts are saved in this browser, not shared online yet.</span></form></section>
+<section id="explore"><div class="section-head"><h2>Community questions</h2><span class="muted" id="count"></span></div><div class="search"><input id="filter" placeholder="Search questions..."><select id="filterCategory"><option value="">All categories</option><option>Daily Life</option><option>Education</option><option>Technology</option><option>Career</option><option>Saving Money</option><option>Travel</option><option>Other</option></select></div><div id="questions"></div></section>
+<section id="about" class="panel"><h2>About SOLVORA</h2><p class="muted">SOLVORA is a community idea built around sharing practical, respectful and helpful solutions. This early version is a prototype. Public accounts, shared posts, moderation and a secure database still need to be added before a worldwide launch.</p></section>
+</main><footer>© 2026 SOLVORA · A World of Solutions</footer>
+<script>
+const starter=[{title:"How can I build a simple daily study routine?",category:"Education",details:"Share realistic tips for staying organised.",votes:2},{title:"What are some ways to keep a phone battery healthy?",category:"Technology",details:"Looking for everyday battery-care suggestions.",votes:1}];
+let posts=JSON.parse(localStorage.getItem("solvora_posts")||"null")||starter;
+function save(){localStorage.setItem("solvora_posts",JSON.stringify(posts));render()}
+function render(){let q=document.querySelector("#filter").value.toLowerCase(),c=document.querySelector("#filterCategory").value;let shown=posts.filter(p=>(!c||p.category===c)&&(p.title+" "+p.details).toLowerCase().includes(q));document.querySelector("#count").textContent=shown.length+" questions";document.querySelector("#questions").innerHTML=shown.map(p=>`<article class="question"><span class="tag">${esc(p.category)}</span><h3>${esc(p.title)}</h3><p>${esc(p.details)}</p><button class="btn" onclick="vote(${posts.indexOf(p)})">👍 Helpful · ${p.votes||0}</button></article>`).join("")||'<p class="muted">No questions found. Try another search.</p>'}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function vote(i){posts[i].votes=(posts[i].votes||0)+1;save()}
+document.querySelector("#askForm").addEventListener("submit",e=>{e.preventDefault();posts.unshift({title:title.value.trim(),category:category.value,details:details.value.trim(),votes:0});save();e.target.reset();alert("Saved in this browser only.")});
+document.querySelector("#filter").addEventListener("input",render);document.querySelector("#filterCategory").addEventListener("change",render);render();
+</script></body></html>
